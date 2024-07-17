@@ -1,0 +1,71 @@
+﻿<Window x:Class="DU7.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DU7" 
+        xmlns:viewModels="clr-namespace:DU7.ViewModels" 
+        xmlns:model="clr-namespace:DU7.Model" 
+        xmlns:d3="clr-namespace:InteractiveDataDisplay.WPF;assembly=InteractiveDataDisplay.WPF"
+        mc:Ignorable="d"
+        Title="Aplikace pro sledování vývoje kurzu měn" Height="450" Width="800">
+    <Window.Resources>
+        
+    </Window.Resources>
+    <DockPanel DataContext="{StaticResource ViewModel}">
+        <GroupBox Margin="10" DockPanel.Dock="Left">
+            <GroupBox.Header>
+                Měny
+            </GroupBox.Header>
+
+            <Grid Width="200" Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Margin="5" Orientation="Horizontal">
+                    <Label>Základ:</Label>
+                    <Label Content="{Binding BaseCurrency.CurrencyName}" />
+                </StackPanel>
+
+                <ListBox Grid.Row="1" ItemsSource="{Binding Path=CurrencyList}" SelectedIndex="{Binding Path=SelectedCurrencyIndex}" SelectedItem="{Binding Path=SelectedCurrencyDetail}" DisplayMemberPath="CurrencyName" >
+                </ListBox>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Margin="5" Padding="5 0 5 0" Content="Zvolit základ" Command="{Binding ChooseBaseCommand}" />
+                    <Button Grid.Column="1" Margin="5" Padding="5 0 5 0" Content="Smazat" Command="{Binding DeleteCommand}" />
+                </Grid>
+                <local:AddCurrencyUserControl Grid.Row="3"></local:AddCurrencyUserControl>
+            </Grid>
+        </GroupBox>
+        <GroupBox Margin="10" DockPanel.Dock="Right">
+            <GroupBox.Header>
+                Graf
+            </GroupBox.Header>
+            <Grid Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <d3:Chart BottomTitle="Den (0 je nejaktuálnější den)" LeftTitle="Hodnota">
+                    <d3:LineGraph x:Name="linegraph" Description="" Stroke="Blue" StrokeThickness="3"/>
+                </d3:Chart>
+
+            </Grid>
+        </GroupBox>
+        
+    </DockPanel>
+</Window>
